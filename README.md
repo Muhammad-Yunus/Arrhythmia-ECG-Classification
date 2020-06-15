@@ -21,6 +21,9 @@
 
 
 ### ECG Dataset
+#### Download dataset : 
+- Test : https://www.kaggle.com/shayanfazeli/heartbeat/data?select=mitbih_test.csv
+- Train : https://www.kaggle.com/shayanfazeli/heartbeat/data?select=mitbih_train.csv
 
 ```
 Number of Samples: 109446
@@ -32,4 +35,4 @@ Classes: ['N': 0, 'S': 1, 'V': 2, 'F': 3, 'Q': 4]
 
 
 - Original Sourcecode : https://www.kaggle.com/gregoiredc/arrhythmia-on-ecg-classification-using-cnn
-- Dataset : https://physionet.org/content/mitdb/1.0.0/
+- Original Source Dataset : https://physionet.org/content/mitdb/1.0.0/
