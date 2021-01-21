@@ -9,3 +9,5 @@ dataset/train_all.csv
 dataset/train_all_lms.csv
 dataset/train_all_nlms.csv
 dataset/train_all_rls.csv
+dataset/test_all-v2.csv
+dataset/train_all-v2.csv
