@@ -79,15 +79,26 @@ def preprocessing_AFDB(record, start=1, stop=None, sep=",", fs=250):
             N_range.append([tm, next_tm])
         else :
             AFIB_range.append([tm, next_tm])
-
+    
+    if not os.path.exists("dataset_split_per_class"):
+        os.mkdir("dataset_split_per_class")
+    
     N = []
     for nr in N_range :
         result = df_ecg.between_time(nr[0].time(), nr[1].time())
+        result.to_csv("dataset_split_per_class/%s_%s_%s_%s.csv" % 
+                      (record, 'N', 
+                       nr[0].time().strftime("%H%M%S"), 
+                       nr[1].time().strftime("%H%M%S")))
         N.append(result)
 
     AFIB = []
     for ar in AFIB_range :
         result = df_ecg.between_time(ar[0].time(), ar[1].time())
+        result.to_csv("dataset_split_per_class/%s_%s_%s_%s.csv" % 
+                      (record, 'AF', 
+                       ar[0].time().strftime("%H%M%S"), 
+                       ar[1].time().strftime("%H%M%S")))
         AFIB.append(result)
 
 
@@ -114,7 +125,6 @@ def preprocessing_AFDB(record, start=1, stop=None, sep=",", fs=250):
         while curr < end:
             yield curr
             curr += delta
-
 
     time_interval_N = []
     for N_item in N:
@@ -577,23 +587,23 @@ def classification(denoised = 'noised', EPOCHS = 16, BATCH_SIZE = 128):
     
 if __name__ == "__main__" :
     records = {
-        "04015" : [1, 8, 400],
-        "04043" : [1, 16, 1000],
-        "04048" : [1, 6, 900],
-        "04126" : [1, None, None],
-        "04908" : [1, None, None],
-        "04936" : [4, None, 2000],
-        "05091" : [1, None, 1000],
-        "05121" : [1, None, 1000],
-        "05261" : [1, 18, 1000],
-        "06426" : [1, None, 2000],
-        "06453" : [1, None, 300],
-        "06995" : [1, None, 900],
-        "07910" : [1, 10, 320],
-        "08215" : [1, None, 400],
-        "08219" : [1, None, 5000],
-        "08378" : [5, None, 220],
-        "08455" : [1, None, 90],
+        "04015" : [1, 8, 400, ','],
+        "04043" : [1, 16, 1000, ','],
+        "04048" : [1, 6, 900, ','],
+        "04126" : [1, None, None, ','],
+        "04908" : [1, None, None, ','],
+        "04936" : [4, None, 2000, ','],
+        "05091" : [1, None, 1000, ','],
+        "05121" : [1, None, 1000, ','],
+        "05261" : [1, 18, 1000, ','],
+        "06426" : [1, None, 2000, ','],
+        "06453" : [1, None, 300, ','],
+        "06995" : [1, None, 900, ','],
+        "07910" : [1, 10, 320, ','],
+        "08215" : [1, None, 400, ','],
+        "08219" : [1, None, 5000, ';'],
+        "08378" : [5, None, 220, ';'],
+        "08455" : [1, None, 90, ';'],
     }
     
     print("============================ *** ============================")
@@ -603,35 +613,36 @@ if __name__ == "__main__" :
         print("[INFO] processing recod %s..." % record)
         start = records[record][0]
         stop = records[record][1]
-        preprocessing_AFDB(record, start=start, stop=stop, sep=",", fs=250)
+        separator = records[record][3]
+        preprocessing_AFDB(record, start=start, stop=stop, sep=separator, fs=250)
         
     
-    print("============================ *** ============================")
-    print("=                     BALANCING DATASET                     =") 
-    print("============================ *** ============================")
-    for record in records :
-        n_samples = records[record][2]
-        if n_samples is not None :
-            print("[INFO] balancing dataset recod %s..." % record)
-            balancing_dataset(record, n_samples)
+#     print("============================ *** ============================")
+#     print("=                     BALANCING DATASET                     =") 
+#     print("============================ *** ============================")
+#     for record in records :
+#         n_samples = records[record][2]
+#         if n_samples is not None :
+#             print("[INFO] balancing dataset recod %s..." % record)
+#             balancing_dataset(record, n_samples)
 
 
-    print("============================ *** ============================")    
-    print("=                      MERGING DATASET                      =") 
-    print("============================ *** ============================") 
-    merging_dataset()
+#     print("============================ *** ============================")    
+#     print("=                      MERGING DATASET                      =") 
+#     print("============================ *** ============================") 
+#     merging_dataset()
     
     
-    print("============================ *** ============================") 
-    print("=                         DENOISING                         =") 
-    print("============================ *** ============================") 
-    denoising()
+#     print("============================ *** ============================") 
+#     print("=                         DENOISING                         =") 
+#     print("============================ *** ============================") 
+#     denoising()
 
     
-    print("============================ *** ============================") 
-    print("=                      CLASSIFICATION                       =") 
-    print("============================ *** ============================") 
-    # isi dengan 'lms', 'nlms', 'rls' untuk memilih sumber dataset dari hasil denoising tsb.
-    # isi dengan 'ori' jika ingin menggunakan original dataset
-    # isi dengan 'noised' jika ingin menggunakan noised dataset
-    classification(denoised = 'lms', EPOCHS = 16, BATCH_SIZE = 128)
+#     print("============================ *** ============================") 
+#     print("=                      CLASSIFICATION                       =") 
+#     print("============================ *** ============================") 
+#     # isi dengan 'lms', 'nlms', 'rls' untuk memilih sumber dataset dari hasil denoising tsb.
+#     # isi dengan 'ori' jika ingin menggunakan original dataset
+#     # isi dengan 'noised' jika ingin menggunakan noised dataset
+#     classification(denoised = 'lms', EPOCHS = 16, BATCH_SIZE = 128)
