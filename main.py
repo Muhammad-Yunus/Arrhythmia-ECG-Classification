@@ -86,7 +86,6 @@ def preprocessing_AFDB(record, start=1, stop=None, sep=",", fs=250):
     N = []
     for ix, nr in enumerate(N_range) :
         result = df_ecg.between_time(nr[0].time(), nr[1].time())
-        AF_04015_ECCG1_1.csv
         result.to_csv("dataset_split_per_class/%s_%s_%s_%s.csv" % 
                       ('N', record, 'ECG1', ix))
         N.append(result)
@@ -614,32 +613,32 @@ if __name__ == "__main__" :
         preprocessing_AFDB(record, start=start, stop=stop, sep=separator, fs=250)
         
     
-#     print("============================ *** ============================")
-#     print("=                     BALANCING DATASET                     =") 
-#     print("============================ *** ============================")
-#     for record in records :
-#         n_samples = records[record][2]
-#         if n_samples is not None :
-#             print("[INFO] balancing dataset recod %s..." % record)
-#             balancing_dataset(record, n_samples)
+    print("============================ *** ============================")
+    print("=                     BALANCING DATASET                     =") 
+    print("============================ *** ============================")
+    for record in records :
+        n_samples = records[record][2]
+        if n_samples is not None :
+            print("[INFO] balancing dataset recod %s..." % record)
+            balancing_dataset(record, n_samples)
 
 
-#     print("============================ *** ============================")    
-#     print("=                      MERGING DATASET                      =") 
-#     print("============================ *** ============================") 
-#     merging_dataset()
+    print("============================ *** ============================")    
+    print("=                      MERGING DATASET                      =") 
+    print("============================ *** ============================") 
+    merging_dataset()
     
     
-#     print("============================ *** ============================") 
-#     print("=                         DENOISING                         =") 
-#     print("============================ *** ============================") 
-#     denoising()
+    print("============================ *** ============================") 
+    print("=                         DENOISING                         =") 
+    print("============================ *** ============================") 
+    denoising()
 
     
-#     print("============================ *** ============================") 
-#     print("=                      CLASSIFICATION                       =") 
-#     print("============================ *** ============================") 
-#     # isi dengan 'lms', 'nlms', 'rls' untuk memilih sumber dataset dari hasil denoising tsb.
-#     # isi dengan 'ori' jika ingin menggunakan original dataset
-#     # isi dengan 'noised' jika ingin menggunakan noised dataset
-#     classification(denoised = 'lms', EPOCHS = 16, BATCH_SIZE = 128)
+    print("============================ *** ============================") 
+    print("=                      CLASSIFICATION                       =") 
+    print("============================ *** ============================") 
+    # isi dengan 'lms', 'nlms', 'rls' untuk memilih sumber dataset dari hasil denoising tsb.
+    # isi dengan 'ori' jika ingin menggunakan original dataset
+    # isi dengan 'noised' jika ingin menggunakan noised dataset
+    classification(denoised = 'lms', EPOCHS = 16, BATCH_SIZE = 128)
