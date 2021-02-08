@@ -84,21 +84,18 @@ def preprocessing_AFDB(record, start=1, stop=None, sep=",", fs=250):
         os.mkdir("dataset_split_per_class")
     
     N = []
-    for nr in N_range :
+    for i, nr in enumerate(N_range) :
         result = df_ecg.between_time(nr[0].time(), nr[1].time())
+        AF_04015_ECCG1_1.csv
         result.to_csv("dataset_split_per_class/%s_%s_%s_%s.csv" % 
-                      (record, 'N', 
-                       nr[0].time().strftime("%H%M%S"), 
-                       nr[1].time().strftime("%H%M%S")))
+                      ('N', record, 'ECG1', i))
         N.append(result)
 
     AFIB = []
     for ar in AFIB_range :
         result = df_ecg.between_time(ar[0].time(), ar[1].time())
         result.to_csv("dataset_split_per_class/%s_%s_%s_%s.csv" % 
-                      (record, 'AF', 
-                       ar[0].time().strftime("%H%M%S"), 
-                       ar[1].time().strftime("%H%M%S")))
+                      ('AF', record, 'ECG1', i))
         AFIB.append(result)
 
 
